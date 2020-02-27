@@ -11,7 +11,7 @@ const ProductsNavigator = createStackNavigator(
     Products: {
       screen: Products,
       navigationOptions: {
-        headerTitle: "Products"
+        headerTitle: " All Products"
       }
     }
   },
