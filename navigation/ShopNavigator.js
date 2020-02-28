@@ -4,6 +4,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import { Platform } from "react-native";
 
 import Products from "../screens/shop/Products";
+import Product from "../screens/shop/Product";
 import Colors from "../constants/Colors";
 
 const ProductsNavigator = createStackNavigator(
@@ -13,7 +14,8 @@ const ProductsNavigator = createStackNavigator(
       navigationOptions: {
         headerTitle: " All Products"
       }
-    }
+    },
+    Product: Product
   },
   {
     defaultNavigationOptions: {

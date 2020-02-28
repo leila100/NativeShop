@@ -4,13 +4,21 @@ import { useSelector } from "react-redux";
 
 import ProductCard from "../../components/shop/ProductCard";
 
-const Products = () => {
+const Products = props => {
   const products = useSelector(state => state.products.availableProducts);
   return (
     <FlatList
       data={products}
       keyExtractor={item => item.id}
-      renderItem={itemData => <ProductCard prod={itemData.item} onViewDetail={() => {}} onAddToCart={() => {}} />}
+      renderItem={itemData => (
+        <ProductCard
+          prod={itemData.item}
+          onViewDetail={() => {
+            props.navigation.navigate("Product", { productId: itemData.item.id, productTitle: itemData.item.title });
+          }}
+          onAddToCart={() => {}}
+        />
+      )}
     />
   );
 };
