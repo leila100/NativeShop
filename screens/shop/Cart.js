@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, FlatList, Button } from "react-native";
 import { useSelector } from "react-redux";
 
 import Colors from "../../constants/Colors";
+import CartCard from "../../components/shop/CartCard";
 
 const Cart = props => {
   const total = useSelector(state => state.cart.total);
@@ -28,9 +29,11 @@ const Cart = props => {
         </Text>
         <Button color={Colors.accent} title='Order' disabled={cartItems.length === 0} />
       </View>
-      <View>
-        <Text>Cart Items!!!</Text>
-      </View>
+      <FlatList
+        data={cartItems}
+        keyExtractor={item => item.productId}
+        renderItem={dataItem => <CartCard item={dataItem.item} onRemove={() => {}} />}
+      />
     </View>
   );
 };
