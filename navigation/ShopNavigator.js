@@ -3,6 +3,7 @@ import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createDrawerNavigator } from "react-navigation-drawer";
 import { Platform } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 import Products from "../screens/shop/Products";
 import Product from "../screens/shop/Product";
@@ -35,6 +36,11 @@ const ProductsNavigator = createStackNavigator(
     Cart: Cart
   },
   {
+    navigationOptions: {
+      drawerIcon: drawerConfig => (
+        <Ionicons name={Platform.OS === "android" ? "md-cart" : "ios-cart"} size={23} color={drawerConfig.tintColor} />
+      )
+    },
     defaultNavigationOptions: defaultOptions
   }
 );
@@ -44,6 +50,11 @@ const OrdersNavigator = createStackNavigator(
     Orders: Orders
   },
   {
+    navigationOptions: {
+      drawerIcon: drawerConfig => (
+        <Ionicons name={Platform.OS === "android" ? "md-list" : "ios-list"} size={23} color={drawerConfig.tintColor} />
+      )
+    },
     defaultNavigationOptions: defaultOptions
   }
 );
