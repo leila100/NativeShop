@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Colors from "../../constants/Colors";
 import CartCard from "../../components/shop/CartCard";
 import { deleteFromCart } from "../../store/actions/cart";
+import { addOrder } from "../../store/actions/orders";
 
 const Cart = props => {
   const dispatch = useDispatch();
@@ -30,7 +31,12 @@ const Cart = props => {
         <Text style={styles.summaryText}>
           Total: <Text style={styles.amount}>{total.toFixed(2)}</Text>
         </Text>
-        <Button color={Colors.accent} title='Order' disabled={cartItems.length === 0} />
+        <Button
+          color={Colors.accent}
+          title='Order'
+          disabled={cartItems.length === 0}
+          onPress={() => dispatch(addOrder(cartItems, total))}
+        />
       </View>
       <FlatList
         data={cartItems}
