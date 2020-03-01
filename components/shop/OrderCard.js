@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 
-import cartCard from "./CartCard";
+import CartCard from "./CartCard";
 import Colors from "../../constants/Colors";
 
 const OrderCard = props => {
+  const [showDetails, setShowDetails] = useState(false);
+
   const { items, total } = props.order;
   const date = props.order.readableDate;
   // const date = props.date;
@@ -14,7 +16,18 @@ const OrderCard = props => {
         <Text style={styles.total}>${total.toFixed(2)}</Text>
         <Text style={styles.date}>{date}</Text>
       </View>
-      <Button color={Colors.primary} title='Show Details' />
+      <Button
+        color={Colors.primary}
+        title={showDetails ? "Hide Details" : "Show Details"}
+        onPress={() => setShowDetails(prevState => !prevState)}
+      />
+      {showDetails && (
+        <View style={styles.items}>
+          {items.map(item => (
+            <CartCard item={item} key={item.productId} />
+          ))}
+        </View>
+      )}
     </View>
   );
 };
@@ -47,6 +60,9 @@ const styles = StyleSheet.create({
     fontFamily: "open-sans",
     fontSize: 16,
     color: "#888"
+  },
+  items: {
+    width: "100%"
   }
 });
 

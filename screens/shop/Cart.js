@@ -42,7 +42,7 @@ const Cart = props => {
         data={cartItems}
         keyExtractor={item => item.productId}
         renderItem={dataItem => (
-          <CartCard item={dataItem.item} onRemove={() => dispatch(deleteFromCart(dataItem.item.productId))} />
+          <CartCard item={dataItem.item} onRemove={() => dispatch(deleteFromCart(dataItem.item.productId))} deletable />
         )}
       />
     </View>
