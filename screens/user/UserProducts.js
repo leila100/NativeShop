@@ -11,13 +11,18 @@ import { deleteProduct } from "../../store/actions/products";
 const UserProducts = props => {
   const userProds = useSelector(state => state.products.userProducts);
   const dispatch = useDispatch();
+
+  const editProdHandler = prodId => {
+    props.navigation.navigate("EditProduct", { prodId: prodId });
+  };
+
   return (
     <FlatList
       data={userProds}
       keyExtractor={item => item.id}
       renderItem={itemData => (
-        <ProductCard prod={itemData.item} onSelect={() => {}}>
-          <Button color={Colors.primary} title='Edit' onPress={() => {}} />
+        <ProductCard prod={itemData.item} onSelect={() => editProdHandler(itemData.item.id)}>
+          <Button color={Colors.primary} title='Edit' onPress={() => editProdHandler(itemData.item.id)} />
           <Button
             color={Colors.primary}
             title='Delete'
@@ -40,6 +45,15 @@ UserProducts.navigationOptions = navData => {
           title='Menu'
           iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
           onPress={() => navData.navigation.toggleDrawer()}
+        />
+      </HeaderButtons>
+    ),
+    headerRight: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title='Add'
+          iconName={Platform.OS === "android" ? "md-create" : "ios-create"}
+          onPress={() => navData.navigation.navigate("EditProduct")}
         />
       </HeaderButtons>
     )
