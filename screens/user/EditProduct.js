@@ -1,31 +1,29 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { StyleSheet, Text, View, TextInput, ScrollView, Platform } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import HeaderButton from "../../components/UI/HeaderButton";
+import * as prodActions from "../../store/actions/products";
 
 const EditProduct = props => {
-  const [title, setTitle] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescription] = useState("");
-
+  const dispatch = useDispatch();
   const prodId = props.navigation.getParam("prodId");
   const products = useSelector(state => state.products.userProducts);
+  const prod = products.find(product => product.id === prodId);
 
-  useEffect(() => {
-    if (prodId) {
-      const prod = products.find(product => product.id === prodId);
-      setTitle(prod.title);
-      setImageUrl(prod.imageUrl);
-      setDescription(prod.description);
-    }
-  }, [prodId]);
+  const [title, setTitle] = useState(prod ? prod.title : "");
+  const [imageUrl, setImageUrl] = useState(prod ? prod.imageUrl : "");
+  const [price, setPrice] = useState(prod ? prod.price : "");
+  const [description, setDescription] = useState(prod ? prod.description : "");
 
   const submitHandler = useCallback(() => {
-    console.log("Submitting!!!");
-  }, []);
+    if (prod) {
+      dispatch(prodActions.updateProduct(prodId, title, imageUrl, description));
+    } else {
+      dispatch(prodActions.createProduct(title, imageUrl, +price, description));
+    }
+  }, [dispatch, prodId, title, imageUrl, description, price]);
 
   useEffect(() => {
     props.navigation.setParams({ submit: submitHandler });
@@ -36,21 +34,21 @@ const EditProduct = props => {
       <View style={styles.form}>
         <View style={styles.formItem}>
           <Text style={styles.label}>Title</Text>
-          <TextInput style={styles.input} value={title} onChange={text => setTitle(text)} />
+          <TextInput style={styles.input} value={title} onChangeText={text => setTitle(text)} />
         </View>
         <View style={styles.formItem}>
           <Text style={styles.label}>Image URL</Text>
-          <TextInput style={styles.input} value={imageUrl} onChange={text => setImageUrl(text)} />
+          <TextInput style={styles.input} value={imageUrl} onChangeText={text => setImageUrl(text)} />
         </View>
         {!prodId && (
           <View style={styles.formItem}>
             <Text style={styles.label}>Price</Text>
-            <TextInput style={styles.input} value={price} onChange={text => setPrice(text)} />
+            <TextInput style={styles.input} value={price} onChangeText={text => setPrice(text)} />
           </View>
         )}
         <View style={styles.formItem}>
           <Text style={styles.label}>Description</Text>
-          <TextInput style={styles.input} value={description} onChange={text => setDescription(text)} />
+          <TextInput style={styles.input} value={description} onChangeText={text => setDescription(text)} />
         </View>
       </View>
     </ScrollView>
