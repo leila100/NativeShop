@@ -23,6 +23,7 @@ const EditProduct = props => {
     } else {
       dispatch(prodActions.createProduct(title, imageUrl, +price, description));
     }
+    props.navigation.goBack();
   }, [dispatch, prodId, title, imageUrl, description, price]);
 
   useEffect(() => {
