@@ -6,6 +6,7 @@ import Colors from "../../constants/Colors";
 import CartCard from "../../components/shop/CartCard";
 import { deleteFromCart } from "../../store/actions/cart";
 import { addOrder } from "../../store/actions/orders";
+import Card from "../../components/UI/Card";
 
 const Cart = props => {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ const Cart = props => {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.summary}>
+      <Card style={styles.summary}>
         <Text style={styles.summaryText}>
           Total: <Text style={styles.amount}>${Math.round(total.toFixed(2) * 100) / 100}</Text>
         </Text>
@@ -37,7 +38,7 @@ const Cart = props => {
           disabled={cartItems.length === 0}
           onPress={() => dispatch(addOrder(cartItems, total))}
         />
-      </View>
+      </Card>
       <FlatList
         data={cartItems}
         keyExtractor={item => item.productId}
@@ -62,14 +63,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 20,
-    padding: 10,
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.26,
-    shadowRadius: 8,
-    elevation: 5,
-    borderRadius: 10,
-    backgroundColor: "white"
+    padding: 10
   },
   summaryText: {
     fontFamily: "open-sans-bold",
