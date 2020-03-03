@@ -30,7 +30,13 @@ export const fetchProducts = () => {
 };
 
 export const deleteProduct = prodId => {
-  return { type: DELETE_PRODUCT, prodId: prodId };
+  return async dispatch => {
+    await fetch(`https://native-shop-api.firebaseio.com/products/${prodId}.json`, {
+      method: "DELETE"
+    });
+
+    dispatch({ type: DELETE_PRODUCT, prodId: prodId });
+  };
 };
 
 export const createProduct = (title, imageUrl, price, description) => {
