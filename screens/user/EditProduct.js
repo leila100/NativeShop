@@ -35,7 +35,15 @@ const EditProduct = props => {
       <View style={styles.form}>
         <View style={styles.formItem}>
           <Text style={styles.label}>Title</Text>
-          <TextInput style={styles.input} value={title} onChangeText={text => setTitle(text)} />
+          <TextInput
+            style={styles.input}
+            value={title}
+            onChangeText={text => setTitle(text)}
+            keyboardType='default'
+            autoCapitalize='sentences'
+            autoCorrect
+            returnKeyType='next'
+          />
         </View>
         <View style={styles.formItem}>
           <Text style={styles.label}>Image URL</Text>
@@ -44,12 +52,25 @@ const EditProduct = props => {
         {!prodId && (
           <View style={styles.formItem}>
             <Text style={styles.label}>Price</Text>
-            <TextInput style={styles.input} value={price} onChangeText={text => setPrice(text)} />
+            <TextInput
+              style={styles.input}
+              value={price}
+              onChangeText={text => setPrice(text)}
+              keyboardType='decimal-pad'
+            />
           </View>
         )}
         <View style={styles.formItem}>
           <Text style={styles.label}>Description</Text>
-          <TextInput style={styles.input} value={description} onChangeText={text => setDescription(text)} />
+          <TextInput
+            style={styles.input}
+            value={description}
+            onChangeText={text => setDescription(text)}
+            keyboardType='default'
+            autoCapitalize='sentences'
+            autoCorrect
+            returnKeyType='next'
+          />
         </View>
       </View>
     </ScrollView>
