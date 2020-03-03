@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { View, Text, FlatList, Platform, Button, ActivityIndicator, StyleSheet } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -11,21 +11,41 @@ import { fetchProducts } from "../../store/actions/products";
 
 const Products = props => {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
   const products = useSelector(state => state.products.availableProducts);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const loadProds = async () => {
-      setIsLoading(true);
+  const loadProds = useCallback(async () => {
+    setError(null);
+    setIsLoading(true);
+    try {
       await dispatch(fetchProducts());
-      setIsLoading(false);
-    };
-    loadProds();
-  }, [dispatch]);
+    } catch (err) {
+      setError(err.message);
+    }
+    setIsLoading(false);
+  }, [dispatch, setError, setIsLoading]);
+
+  useEffect(
+    () => {
+      loadProds();
+    },
+    [dispatch],
+    loadProds
+  );
 
   const selectItemHandler = (id, title) => {
     props.navigation.navigate("Product", { productId: id, productTitle: title });
   };
+
+  if (error) {
+    return (
+      <View style={styles.centered}>
+        <Text>An error ocurred: {error}</Text>
+        <Button title='Try again' onPress={loadProds} color={Colors.primary} />
+      </View>
+    );
+  }
 
   if (isLoading) {
     return (

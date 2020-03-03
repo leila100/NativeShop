@@ -7,16 +7,25 @@ export const SET_PRODUCTS = "SET_PRODUCTS";
 
 export const fetchProducts = () => {
   return async dispatch => {
-    const response = await fetch("https://native-shop-api.firebaseio.com/products.json");
+    try {
+      const response = await fetch("https://native-shop-api.firebaseio.com/products.json");
 
-    const resData = await response.json();
-    const products = [];
-    for (let key in resData) {
-      const { description, imageUrl, price, title } = resData[key];
-      products.push(new Product(key, "u1", title, imageUrl, description, price));
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+
+      const resData = await response.json();
+      const products = [];
+      for (let key in resData) {
+        const { description, imageUrl, price, title } = resData[key];
+        products.push(new Product(key, "u1", title, imageUrl, description, price));
+      }
+
+      dispatch({ type: SET_PRODUCTS, products: products });
+    } catch (error) {
+      // add to error logs
+      throw error;
     }
-
-    dispatch({ type: SET_PRODUCTS, products: products });
   };
 };
 
