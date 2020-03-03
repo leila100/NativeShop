@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { StyleSheet, Text, View, TextInput, ScrollView, Platform } from "react-native";
+import { StyleSheet, Text, View, TextInput, ScrollView, Platform, Alert } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -17,7 +17,14 @@ const EditProduct = props => {
   const [price, setPrice] = useState(prod ? prod.price : "");
   const [description, setDescription] = useState(prod ? prod.description : "");
 
+  const [titleIsValid, setTitleIsValid] = useState(false);
+
   const submitHandler = useCallback(() => {
+    if (!titleIsValid) {
+      Alert.alert("Wrong input", "Please check the errors in the form.", [{ text: "OK" }]);
+      return;
+    }
+
     if (prod) {
       dispatch(prodActions.updateProduct(prodId, title, imageUrl, description));
     } else {
@@ -30,6 +37,12 @@ const EditProduct = props => {
     props.navigation.setParams({ submit: submitHandler });
   }, [submitHandler]);
 
+  const titleChangeHandler = text => {
+    if (text.trim().length === 0) setTitleIsValid(false);
+    else setTitleIsValid(true);
+    setTitle(text);
+  };
+
   return (
     <ScrollView>
       <View style={styles.form}>
@@ -38,12 +51,13 @@ const EditProduct = props => {
           <TextInput
             style={styles.input}
             value={title}
-            onChangeText={text => setTitle(text)}
+            onChangeText={titleChangeHandler}
             keyboardType='default'
             autoCapitalize='sentences'
             autoCorrect
             returnKeyType='next'
           />
+          {!titleIsValid && <Text>Please enter a valid title!</Text>}
         </View>
         <View style={styles.formItem}>
           <Text style={styles.label}>Image URL</Text>
