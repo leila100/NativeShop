@@ -26,6 +26,13 @@ const Products = props => {
     setIsLoading(false);
   }, [dispatch, setError, setIsLoading]);
 
+  useEffect(() => {
+    const willFocusSub = props.navigation.addListener("willFocus", loadProds);
+    return () => {
+      willFocusSub.remove();
+    };
+  }, [loadProds]);
+
   useEffect(
     () => {
       loadProds();
