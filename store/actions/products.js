@@ -7,7 +7,21 @@ export const deleteProduct = prodId => {
 };
 
 export const createProduct = (title, imageUrl, price, description) => {
-  return { type: CREATE_PRODUCT, prod: { title, imageUrl, price, description } };
+  return async dispatch => {
+    const response = await fetch("https://native-shop-api.firebaseio.com/products.json", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ title, imageUrl, price, description })
+    });
+
+    const resData = await response.json();
+
+    console.log(resData);
+
+    dispatch({ type: CREATE_PRODUCT, prod: { id: resData.name, title, imageUrl, price, description } });
+  };
 };
 
 export const updateProduct = (id, title, imageUrl, description) => {
