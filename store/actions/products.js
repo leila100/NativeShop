@@ -52,5 +52,15 @@ export const createProduct = (title, imageUrl, price, description) => {
 };
 
 export const updateProduct = (id, title, imageUrl, description) => {
-  return { type: UPDATE_PRODUCT, prod: { title, imageUrl, description }, prodId: id };
+  return async dispatch => {
+    await fetch(`https://native-shop-api.firebaseio.com/products/${id}.json`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ title, imageUrl, description })
+    });
+
+    dispatch({ type: UPDATE_PRODUCT, prod: { title, imageUrl, description }, prodId: id });
+  };
 };
