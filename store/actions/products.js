@@ -31,9 +31,13 @@ export const fetchProducts = () => {
 
 export const deleteProduct = prodId => {
   return async dispatch => {
-    await fetch(`https://native-shop-api.firebaseio.com/products/${prodId}.json`, {
+    const response = await fetch(`https://native-shop-api.firebaseio.com/products/${prodId}.json`, {
       method: "DELETE"
     });
+
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    }
 
     dispatch({ type: DELETE_PRODUCT, prodId: prodId });
   };
@@ -49,6 +53,10 @@ export const createProduct = (title, imageUrl, price, description) => {
       body: JSON.stringify({ title, imageUrl, price, description })
     });
 
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    }
+
     const resData = await response.json();
 
     console.log(resData);
@@ -59,14 +67,23 @@ export const createProduct = (title, imageUrl, price, description) => {
 
 export const updateProduct = (id, title, imageUrl, description) => {
   return async dispatch => {
-    await fetch(`https://native-shop-api.firebaseio.com/products/${id}.json`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ title, imageUrl, description })
-    });
+    try {
+      const response = await fetch(`https://native-shop-api.firebaseio.com/products/${id}.json`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ title, imageUrl, description })
+      });
 
-    dispatch({ type: UPDATE_PRODUCT, prod: { title, imageUrl, description }, prodId: id });
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+
+      dispatch({ type: UPDATE_PRODUCT, prod: { title, imageUrl, description }, prodId: id });
+    } catch (error) {
+      // add to error logs
+      throw error;
+    }
   };
 };

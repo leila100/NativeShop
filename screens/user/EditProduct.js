@@ -59,6 +59,12 @@ const EditProduct = props => {
     formIsValid: prod ? true : false
   });
 
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An error ocurred!", error, [{ text: "OK" }]);
+    }
+  }, [error]);
+
   const submitHandler = useCallback(async () => {
     if (!formState.formIsValid) {
       Alert.alert("Wrong input", "Please check the errors in the form.", [{ text: "OK" }]);
@@ -88,11 +94,11 @@ const EditProduct = props => {
           )
         );
       }
+      props.navigation.goBack();
     } catch (err) {
       setError(err.message);
     }
     setIsLoading(false);
-    props.navigation.goBack();
   }, [dispatch, prodId, formState]);
 
   useEffect(() => {
