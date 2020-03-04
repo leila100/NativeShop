@@ -11,19 +11,20 @@ import { fetchProducts } from "../../store/actions/products";
 
 const Products = props => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
   const products = useSelector(state => state.products.availableProducts);
   const dispatch = useDispatch();
 
   const loadProds = useCallback(async () => {
     setError(null);
-    setIsLoading(true);
+    setIsRefreshing(true);
     try {
       await dispatch(fetchProducts());
     } catch (err) {
       setError(err.message);
     }
-    setIsLoading(false);
+    setIsRefreshing(false);
   }, [dispatch, setError, setIsLoading]);
 
   useEffect(() => {
@@ -35,7 +36,8 @@ const Products = props => {
 
   useEffect(
     () => {
-      loadProds();
+      setIsLoading(true);
+      loadProds().then(() => setIsLoading(false));
     },
     [dispatch],
     loadProds
@@ -72,6 +74,8 @@ const Products = props => {
 
   return (
     <FlatList
+      onRefresh={loadProds}
+      refreshing={isRefreshing}
       data={products}
       keyExtractor={item => item.id}
       renderItem={itemData => (
