@@ -1,11 +1,12 @@
-import React, { useEffect, useCallback, useReducer } from "react";
-import { StyleSheet, View, ScrollView, Platform, Alert, KeyboardAvoidingView } from "react-native";
+import React, { useState, useEffect, useCallback, useReducer } from "react";
+import { StyleSheet, View, ScrollView, Platform, Alert, KeyboardAvoidingView, ActivityIndicator } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { useSelector, useDispatch } from "react-redux";
 
 import HeaderButton from "../../components/UI/HeaderButton";
 import * as prodActions from "../../store/actions/products";
 import Input from "../../components/UI/Input";
+import Colors from "../../constants/Colors";
 
 const FORM_INPUT_UPDATE = "UPDATE";
 
@@ -35,6 +36,8 @@ const formReducer = (state, action) => {
 
 const EditProduct = props => {
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
 
   const prodId = props.navigation.getParam("prodId");
   const products = useSelector(state => state.products.userProducts);
@@ -56,31 +59,39 @@ const EditProduct = props => {
     formIsValid: prod ? true : false
   });
 
-  const submitHandler = useCallback(() => {
+  const submitHandler = useCallback(async () => {
     if (!formState.formIsValid) {
       Alert.alert("Wrong input", "Please check the errors in the form.", [{ text: "OK" }]);
       return;
     }
 
-    if (prod) {
-      dispatch(
-        prodActions.updateProduct(
-          prodId,
-          formState.inputValues.title,
-          formState.inputValues.imageUrl,
-          formState.inputValues.description
-        )
-      );
-    } else {
-      dispatch(
-        prodActions.createProduct(
-          formState.inputValues.title,
-          formState.inputValues.imageUrl,
-          +formState.inputValues.price,
-          formState.inputValues.description
-        )
-      );
+    setError(null);
+    setIsLoading(true);
+
+    try {
+      if (prod) {
+        await dispatch(
+          prodActions.updateProduct(
+            prodId,
+            formState.inputValues.title,
+            formState.inputValues.imageUrl,
+            formState.inputValues.description
+          )
+        );
+      } else {
+        await dispatch(
+          prodActions.createProduct(
+            formState.inputValues.title,
+            formState.inputValues.imageUrl,
+            +formState.inputValues.price,
+            formState.inputValues.description
+          )
+        );
+      }
+    } catch (err) {
+      setError(err.message);
     }
+    setIsLoading(false);
     props.navigation.goBack();
   }, [dispatch, prodId, formState]);
 
@@ -94,6 +105,14 @@ const EditProduct = props => {
     },
     [dispatchFormState]
   );
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size='large' color={Colors.primary} />
+      </View>
+    );
+  }
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding' keyboardVerticalOffset={100}>
@@ -171,7 +190,8 @@ EditProduct.navigationOptions = navData => {
 const styles = StyleSheet.create({
   form: {
     margin: 20
-  }
+  },
+  centered: { flex: 1, alignItems: "center", justifyContent: "center" }
 });
 
 export default EditProduct;
