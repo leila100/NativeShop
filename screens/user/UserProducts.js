@@ -1,5 +1,5 @@
-import React from "react";
-import { FlatList, Platform, Button, Alert } from "react-native";
+import React, { useState } from "react";
+import { View, FlatList, Platform, Button, Alert, ActivityIndicator, StyleSheet } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
@@ -9,6 +9,8 @@ import Colors from "../../constants/Colors";
 import { deleteProduct } from "../../store/actions/products";
 
 const UserProducts = props => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const userProds = useSelector(state => state.products.userProducts);
   const dispatch = useDispatch();
 
@@ -22,12 +24,22 @@ const UserProducts = props => {
       {
         text: "Yes",
         style: "destructive",
-        onPress: () => {
-          dispatch(deleteProduct(id));
+        onPress: async () => {
+          setIsLoading(true);
+          await dispatch(deleteProduct(id));
+          setIsLoading(false);
         }
       }
     ]);
   };
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size='large' color={Colors.primary} />
+      </View>
+    );
+  }
 
   return (
     <FlatList
@@ -73,4 +85,7 @@ UserProducts.navigationOptions = navData => {
   };
 };
 
+const styles = StyleSheet.create({
+  centered: { flex: 1, alignItems: "center", justifyContent: "center" }
+});
 export default UserProducts;
