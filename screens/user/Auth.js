@@ -1,4 +1,4 @@
-import React, { useReducer, useCallback } from "react";
+import React, { useState, useReducer, useCallback } from "react";
 import { ScrollView, StyleSheet, View, KeyboardAvoidingView, Button } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch } from "react-redux";
@@ -37,6 +37,8 @@ const formReducer = (state, action) => {
 const Auth = props => {
   const dispatch = useDispatch();
 
+  const [isSignUp, setIsSignUp] = useState(false);
+
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       email: "",
@@ -49,8 +51,9 @@ const Auth = props => {
     formIsValid: false
   });
 
-  const signupHandler = () => {
-    dispatch(authActions.signup(formState.inputValues.email, formState.inputValues.password));
+  const authHandler = () => {
+    if (isSignUp) dispatch(authActions.signup(formState.inputValues.email, formState.inputValues.password));
+    else dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password));
   };
 
   const inputChangeHandler = useCallback(
@@ -89,10 +92,16 @@ const Auth = props => {
               initialValue=''
             />
             <View style={styles.button}>
-              <Button title='Login' color={Colors.primary} onPress={signupHandler} />
+              <Button title={isSignUp ? "Sign up" : "Login"} color={Colors.primary} onPress={authHandler} />
             </View>
             <View style={styles.button}>
-              <Button title='Switch to Sign Up' color={Colors.accent} onPress={() => {}} />
+              <Button
+                title={`Switch to ${isSignUp ? "Login" : "Sign Up"}`}
+                color={Colors.accent}
+                onPress={() => {
+                  setIsSignUp(prevState => !prevState);
+                }}
+              />
             </View>
           </ScrollView>
         </Card>
