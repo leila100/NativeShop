@@ -30,8 +30,10 @@ export const fetchProducts = () => {
 };
 
 export const deleteProduct = prodId => {
-  return async dispatch => {
-    const response = await fetch(`https://native-shop-api.firebaseio.com/products/${prodId}.json`, {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+
+    const response = await fetch(`https://native-shop-api.firebaseio.com/products/${prodId}.json?auth=${token}`, {
       method: "DELETE"
     });
 
