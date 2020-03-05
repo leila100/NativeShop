@@ -64,9 +64,10 @@ export const createProduct = (title, imageUrl, price, description) => {
 };
 
 export const updateProduct = (id, title, imageUrl, description) => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     try {
-      const response = await fetch(`https://native-shop-api.firebaseio.com/products/${id}.json`, {
+      const response = await fetch(`https://native-shop-api.firebaseio.com/products/${id}.json?auth=${token}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json"

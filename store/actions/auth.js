@@ -2,7 +2,6 @@ export const SIGNUP = "SIGNUP";
 export const LOGIN = "LOGIN";
 
 export const signup = (email, password) => {
-  console.log("here ", email, password);
   return async dispatch => {
     try {
       const response = await fetch(
@@ -40,7 +39,6 @@ export const signup = (email, password) => {
 };
 
 export const login = (email, password) => {
-  console.log("here ", email, password);
   return async dispatch => {
     try {
       const response = await fetch(
