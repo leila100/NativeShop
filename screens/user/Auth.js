@@ -67,10 +67,11 @@ const Auth = props => {
     else action = authActions.login(formState.inputValues.email, formState.inputValues.password);
     try {
       await dispatch(action);
+      props.navigation.navigate("Shop");
     } catch (err) {
       setError(err.message);
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const inputChangeHandler = useCallback(
