@@ -44,8 +44,9 @@ export const deleteProduct = prodId => {
 };
 
 export const createProduct = (title, imageUrl, price, description) => {
-  return async dispatch => {
-    const response = await fetch("https://native-shop-api.firebaseio.com/products.json", {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const response = await fetch(`https://native-shop-api.firebaseio.com/products.json?auth=${token}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
