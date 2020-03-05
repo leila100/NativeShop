@@ -26,10 +26,8 @@ export const signup = (email, password) => {
 
       const resData = await response.json();
 
-      console.log(resData);
       dispatch({ type: SIGNUP });
     } catch (err) {
-      console.log("Error: ", err);
       throw err;
     }
   };
@@ -55,7 +53,15 @@ export const login = (email, password) => {
       );
 
       if (!response.ok) {
-        throw new Error("Something went wrong!");
+        const errorResData = await response.json();
+        const errorId = errorResData.error.message;
+        let message = "Something went wrong!";
+        if (errorId === "EMAIL_NOT_FOUND") {
+          message = "This email could not be found!";
+        } else if (errorId === "INVALID_PASSWORD") {
+          message = "Invalid password";
+        }
+        throw new Error(message);
       }
 
       const resData = await response.json();
@@ -63,7 +69,6 @@ export const login = (email, password) => {
       console.log(resData);
       dispatch({ type: LOGIN });
     } catch (err) {
-      console.log("Error: ", err);
       throw err;
     }
   };

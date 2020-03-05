@@ -1,5 +1,5 @@
-import React, { useState, useReducer, useCallback } from "react";
-import { ScrollView, StyleSheet, View, KeyboardAvoidingView, Button, ActivityIndicator } from "react-native";
+import React, { useState, useReducer, useCallback, useEffect } from "react";
+import { ScrollView, StyleSheet, View, KeyboardAvoidingView, Button, ActivityIndicator, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch } from "react-redux";
 
@@ -39,6 +39,7 @@ const Auth = props => {
 
   const [isSignUp, setIsSignUp] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -52,12 +53,23 @@ const Auth = props => {
     formIsValid: false
   });
 
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An error occured", error, [{ text: "ok" }]);
+    }
+  }, [error]);
+
   const authHandler = async () => {
+    setError(null);
     setIsLoading(true);
     let action;
     if (isSignUp) action = authActions.signup(formState.inputValues.email, formState.inputValues.password);
     else action = authActions.login(formState.inputValues.email, formState.inputValues.password);
-    await dispatch(action);
+    try {
+      await dispatch(action);
+    } catch (err) {
+      setError(err.message);
+    }
     setIsLoading(false);
   };
 
