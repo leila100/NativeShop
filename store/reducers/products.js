@@ -14,7 +14,7 @@ export default productsReducer = (state = initialState, action) => {
       return {
         ...state,
         availableProducts: action.products,
-        userProducts: action.products.filter(prod => prod.ownerId === "u1")
+        userProducts: action.userProducts
       };
 
     case DELETE_PRODUCT:

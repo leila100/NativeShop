@@ -6,7 +6,8 @@ export const UPDATE_PRODUCT = "UPDATE_PRODUCT";
 export const SET_PRODUCTS = "SET_PRODUCTS";
 
 export const fetchProducts = () => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
+    const userId = getState().auth.userId;
     try {
       const response = await fetch("https://native-shop-api.firebaseio.com/products.json");
 
@@ -17,11 +18,15 @@ export const fetchProducts = () => {
       const resData = await response.json();
       const products = [];
       for (let key in resData) {
-        const { description, imageUrl, price, title } = resData[key];
-        products.push(new Product(key, "u1", title, imageUrl, description, price));
+        const { description, imageUrl, price, title, ownerId } = resData[key];
+        products.push(new Product(key, ownerId, title, imageUrl, description, price));
       }
 
-      dispatch({ type: SET_PRODUCTS, products: products });
+      dispatch({
+        type: SET_PRODUCTS,
+        products: products,
+        userProducts: products.filter(prod => prod.ownerId === userId)
+      });
     } catch (error) {
       // add to error logs
       throw error;
