@@ -1,5 +1,5 @@
 import React, { useState, useReducer, useCallback } from "react";
-import { ScrollView, StyleSheet, View, KeyboardAvoidingView, Button } from "react-native";
+import { ScrollView, StyleSheet, View, KeyboardAvoidingView, Button, ActivityIndicator } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch } from "react-redux";
 
@@ -38,6 +38,7 @@ const Auth = props => {
   const dispatch = useDispatch();
 
   const [isSignUp, setIsSignUp] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -51,9 +52,13 @@ const Auth = props => {
     formIsValid: false
   });
 
-  const authHandler = () => {
-    if (isSignUp) dispatch(authActions.signup(formState.inputValues.email, formState.inputValues.password));
-    else dispatch(authActions.login(formState.inputValues.email, formState.inputValues.password));
+  const authHandler = async () => {
+    setIsLoading(true);
+    let action;
+    if (isSignUp) action = authActions.signup(formState.inputValues.email, formState.inputValues.password);
+    else action = authActions.login(formState.inputValues.email, formState.inputValues.password);
+    await dispatch(action);
+    setIsLoading(false);
   };
 
   const inputChangeHandler = useCallback(
@@ -92,7 +97,11 @@ const Auth = props => {
               initialValue=''
             />
             <View style={styles.button}>
-              <Button title={isSignUp ? "Sign up" : "Login"} color={Colors.primary} onPress={authHandler} />
+              {isLoading ? (
+                <ActivityIndicator size='small' color={Colors.primary} />
+              ) : (
+                <Button title={isSignUp ? "Sign up" : "Login"} color={Colors.primary} onPress={authHandler} />
+              )}
             </View>
             <View style={styles.button}>
               <Button
