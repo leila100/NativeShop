@@ -48,12 +48,13 @@ export const deleteProduct = prodId => {
 export const createProduct = (title, imageUrl, price, description) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
+    const userId = getState().auth.userId;
     const response = await fetch(`https://native-shop-api.firebaseio.com/products.json?auth=${token}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ title, imageUrl, price, description })
+      body: JSON.stringify({ title, imageUrl, price, description, ownerId: userId })
     });
 
     if (!response.ok) {
@@ -62,7 +63,10 @@ export const createProduct = (title, imageUrl, price, description) => {
 
     const resData = await response.json();
 
-    dispatch({ type: CREATE_PRODUCT, prod: { id: resData.name, title, imageUrl, price, description } });
+    dispatch({
+      type: CREATE_PRODUCT,
+      prod: { id: resData.name, title, imageUrl, price, description, ownerId: userId }
+    });
   };
 };
 

@@ -25,8 +25,8 @@ export default productsReducer = (state = initialState, action) => {
       };
 
     case CREATE_PRODUCT:
-      var { id, title, imageUrl, description, price } = action.prod;
-      const newProd = new Product(id, "u1", title, imageUrl, description, price);
+      var { id, title, imageUrl, description, price, ownerId } = action.prod;
+      const newProd = new Product(id, ownerId, title, imageUrl, description, price);
       return {
         ...state,
         availableProducts: [...state.availableProducts, newProd],
