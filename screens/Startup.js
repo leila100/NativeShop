@@ -21,8 +21,11 @@ const Startup = props => {
         props.navigation.navigate("Auth");
         return;
       }
+
+      const expirationTime = expire.getTime() - new Date().getTime();
+
       props.navigation.navigate("Shop");
-      dispatch(authenticate(userId, token));
+      dispatch(authenticate(userId, token, expirationTime));
     };
     tryLogin();
   }, []);
