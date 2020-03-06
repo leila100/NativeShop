@@ -12,6 +12,7 @@ import Orders from "../screens/shop/Orders";
 import UserProducts from "../screens/user/UserProducts";
 import EditProduct from "../screens/user/EditProduct";
 import Auth from "../screens/user/Auth";
+import Startup from "../screens/Startup";
 import Colors from "../constants/Colors";
 
 const defaultOptions = {
@@ -104,6 +105,7 @@ const AuthNavigator = createStackNavigator(
 );
 
 const MainNavigator = createSwitchNavigator({
+  Startup: Startup,
   Auth: AuthNavigator,
   Shop: ShopNavigator
 });
