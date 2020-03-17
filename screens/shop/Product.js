@@ -26,7 +26,7 @@ const Product = props => {
   );
 };
 
-Product.navigationOptions = navData => {
+export const prodScreenOptions = navData => {
   const title = navData.navigation.getParam("productTitle");
   return {
     headerTitle: title

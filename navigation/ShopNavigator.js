@@ -6,9 +6,9 @@ import { useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 
 import Products, { screenOptions } from "../screens/shop/Products";
-import Product from "../screens/shop/Product";
-import Cart from "../screens/shop/Cart";
-import Orders from "../screens/shop/Orders";
+import Product, { prodScreenOptions } from "../screens/shop/Product";
+import Cart, { cartNavOptions } from "../screens/shop/Cart";
+import Orders, { ordersNavOptions } from "../screens/shop/Orders";
 import UserProducts from "../screens/user/UserProducts";
 import EditProduct from "../screens/user/EditProduct";
 import Auth from "../screens/user/Auth";
@@ -35,8 +35,8 @@ export const ProductsNavigator = () => {
   return (
     <ProdsNavigator.Navigator screenOptions={defaultOptions}>
       <ProdsNavigator.Screen name='Products' component={Products} options={screenOptions} />
-      <ProdsNavigator.Screen name='Product' component={Product} />
-      <ProdsNavigator.Screen name='Cart' component={Cart} />
+      <ProdsNavigator.Screen name='Product' component={Product} options={prodScreenOptions} />
+      <ProdsNavigator.Screen name='Cart' component={Cart} options={cartNavOptions} />
     </ProdsNavigator.Navigator>
   );
 };
@@ -61,6 +61,16 @@ export const ProductsNavigator = () => {
 //     defaultNavigationOptions: defaultOptions
 //   }
 // );
+
+const OrdersStackNavigator = createStackNavigator();
+
+export const OrdersNavigator = () => {
+  return (
+    <OrdersStackNavigator.Navigator screenOptions={defaultOptions}>
+      <OrdersStackNavigator.Screen name='Orders' component={Orders} options={ordersNavOptions} />
+    </OrdersStackNavigator.Navigator>
+  );
+};
 
 // const OrdersNavigator = createStackNavigator(
 //   {

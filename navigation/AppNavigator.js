@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 
-import { ProductsNavigator } from "./ShopNavigator";
+import { ProductsNavigator, OrdersNavigator } from "./ShopNavigator";
 
 const AppNavigator = () => {
   const isAuth = useSelector(state => !!state.auth.token);
@@ -10,6 +10,7 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <ProductsNavigator />
+      <OrdersNavigator />
     </NavigationContainer>
   );
 };
