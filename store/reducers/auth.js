@@ -23,7 +23,12 @@ export default authReducer = (state = initialState, action) => {
       };
 
     case LOGOUT:
-      return initialState;
+      return {
+        ...state,
+        token: null,
+        userId: null,
+        didTryAutoLogin: true
+      };
 
     default:
       return state;

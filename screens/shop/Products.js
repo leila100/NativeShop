@@ -28,9 +28,9 @@ const Products = props => {
   }, [dispatch, setError, setIsLoading]);
 
   useEffect(() => {
-    const willFocusSub = props.navigation.addListener("willFocus", loadProds);
+    const unsubscribe = props.navigation.addListener("focus", loadProds);
     return () => {
-      willFocusSub.remove();
+      unsubscribe();
     };
   }, [loadProds]);
 
