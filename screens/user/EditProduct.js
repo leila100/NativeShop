@@ -39,7 +39,7 @@ const EditProduct = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  const prodId = props.navigation.getParam("prodId");
+  const prodId = props.route.params ? props.route.params.prodId : null;
   const products = useSelector(state => state.products.userProducts);
   const prod = products.find(product => product.id === prodId);
 
@@ -182,9 +182,10 @@ const EditProduct = props => {
 };
 
 export const editNavOptions = navData => {
-  const submitFn = navData.navigation.getParam("submit");
+  const navParams = navData.route.params ? navData.route.params : {};
+  const submitFn = navData.route.params ? navData.route.params.submit : null;
   return {
-    headerTitle: navData.navigation.getParam("prodId") ? "Edit Product" : "Add Product",
+    headerTitle: navParams.prodId ? "Edit Product" : "Add Product",
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item title='Save' iconName={Platform.OS === "android" ? "md-checkmark" : "ios-checkmark"} onPress={submitFn} />
