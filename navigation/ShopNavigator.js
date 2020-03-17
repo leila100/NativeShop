@@ -9,8 +9,8 @@ import Products, { screenOptions } from "../screens/shop/Products";
 import Product, { prodScreenOptions } from "../screens/shop/Product";
 import Cart, { cartNavOptions } from "../screens/shop/Cart";
 import Orders, { ordersNavOptions } from "../screens/shop/Orders";
-import UserProducts from "../screens/user/UserProducts";
-import EditProduct from "../screens/user/EditProduct";
+import UserProducts, { userNavOptions } from "../screens/user/UserProducts";
+import EditProduct, { editNavOptions } from "../screens/user/EditProduct";
 import Auth from "../screens/user/Auth";
 import Startup from "../screens/Startup";
 import { logout } from "../store/actions/auth";
@@ -85,6 +85,17 @@ export const OrdersNavigator = () => {
 //     defaultNavigationOptions: defaultOptions
 //   }
 // );
+
+const UserStackNavigator = createStackNavigator();
+
+export const UserNavigator = () => {
+  return (
+    <UserStackNavigator.Navigator screenOptions={defaultOptions}>
+      <UserStackNavigator.Screen name='UserProducts' component={UserProducts} options={userNavOptions} />
+      <UserStackNavigator.Screen name='EditProduct' component={EditProduct} options={editNavOptions} />
+    </UserStackNavigator.Navigator>
+  );
+};
 
 // const UserNavigator = createStackNavigator(
 //   {

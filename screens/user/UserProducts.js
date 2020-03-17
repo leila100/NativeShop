@@ -69,7 +69,7 @@ const UserProducts = props => {
   );
 };
 
-UserProducts.navigationOptions = navData => {
+export const userNavOptions = navData => {
   return {
     headerTitle: "Your Products",
     headerLeft: () => (
