@@ -6,7 +6,7 @@ import Colors from "../../constants/Colors";
 import * as cartActions from "../../store/actions/cart";
 
 const Product = props => {
-  const prodId = props.navigation.getParam("productId");
+  const prodId = props.route.params ? props.route.params.productId : null;
   const selectedProd = useSelector(state => state.products.availableProducts.find(product => product.id === prodId));
   const dispatch = useDispatch();
 
@@ -27,7 +27,7 @@ const Product = props => {
 };
 
 export const prodScreenOptions = navData => {
-  const title = navData.navigation.getParam("productTitle");
+  const title = navData.route.params ? navData.route.params.productTitle : "";
   return {
     headerTitle: title
   };

@@ -10,7 +10,6 @@ const Startup = props => {
   useEffect(() => {
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem("userData");
-      console.log(userData);
       if (!userData) {
         // props.navigation.navigate("Auth");
         dispatch(setDidTryAl());
