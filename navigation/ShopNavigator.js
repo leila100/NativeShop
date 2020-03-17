@@ -11,7 +11,7 @@ import Cart, { cartNavOptions } from "../screens/shop/Cart";
 import Orders, { ordersNavOptions } from "../screens/shop/Orders";
 import UserProducts, { userNavOptions } from "../screens/user/UserProducts";
 import EditProduct, { editNavOptions } from "../screens/user/EditProduct";
-import Auth from "../screens/user/Auth";
+import Auth, { authNavOptions } from "../screens/user/Auth";
 import Startup from "../screens/Startup";
 import { logout } from "../store/actions/auth";
 import Colors from "../constants/Colors";
@@ -203,6 +203,15 @@ export const ShopNavigator = () => {
 //   }
 // );
 
+const AuthStackNavigator = createStackNavigator();
+
+export const AuthNavigator = () => {
+  return (
+    <AuthStackNavigator.Navigator screenOptions={defaultOptions}>
+      <AuthStackNavigator.Screen name='Auth' component={Auth} options={authNavOptions} />
+    </AuthStackNavigator.Navigator>
+  );
+};
 // const AuthNavigator = createStackNavigator(
 //   {
 //     Auth: Auth

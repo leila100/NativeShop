@@ -132,7 +132,7 @@ const Auth = props => {
   );
 };
 
-Auth.navigationOptions = {
+export const authNavOptions = {
   headerTitle: "Authenticate"
 };
 
