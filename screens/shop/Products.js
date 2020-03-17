@@ -96,8 +96,9 @@ const Products = props => {
   );
 };
 
-Products.navigationOptions = navData => {
+export const screenOptions = navData => {
   return {
+    headerTitle: "All Products",
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
